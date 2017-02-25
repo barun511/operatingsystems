@@ -16,7 +16,7 @@ def calculate(array):
         pid = os.fork()
         if pid==0:  # First child, this will recursively calculate the maximum of left array
             os.close(firstchildin) # Close the read end of pipe1
-            print("This is child process, and will calculate ")
+            print("This is child process, and will calculate max of ")
             print(array[:divide])
             writeobject = os.fdopen(firstchildout, 'w')
             writeobject.write(str(calculate(array[:divide])) )
@@ -26,7 +26,7 @@ def calculate(array):
             os.close(firstchildout)
             secondchildin, secondchildout = os.pipe()
             ppid = os.fork()
-            if ppid:
+            if ppid: # Parent keeps track of both children, reads in the objects, and returns the max (must do this or function cannot be called recursively)
                 os.close(secondchildout)
                 os.waitpid(pid, 0)
                 os.waitpid(ppid,0)
@@ -38,9 +38,9 @@ def calculate(array):
                 print("text = ", leftchildmax)
                 print("text = ", rightchildmax)
                 return max(leftchildmax, rightchildmax)
-            else:
+            else: # Second child
                 os.close(secondchildin)
-                print("This is second child and will calculate")
+                print("This is second child and will calculate max of ")
                 print(array[divide:])
                 writeobject = os.fdopen(secondchildout, 'w')
                 writeobject.write(str(calculate(array[divide:])))
