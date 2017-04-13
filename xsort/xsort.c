@@ -25,12 +25,13 @@ int main(int argc, char * argv[])
     char file[] = "./sort1 ";
     strcat(file,filename);
     strcat(file,";bash\0");
+    printf("%s", file);
     argv[0]=(char *)malloc(10*sizeof(char)); strcpy(argv[0],"xterm");
     argv[1]=(char *)malloc(10*sizeof(char)); strcpy(argv[1],"-e");
     argv[2]=(char *)malloc(20*sizeof(char)); strcpy(argv[2],file); // Note: works with "./sort1 file.txt;bash"
     argv[3]=NULL;
-//    execlp("xterm","xterm","-e","./sort1 file.txt","127.0.0.1",(char *) 0);
-    execvp(argv[0], argv);
+    execlp("xterm","xterm","-e","./sort1 input.txt","127.0.0.1",(char *) 0);
+//    execvp(argv[0], argv);
   //h  printf("execvp failed %s \n", strerror(errno));
 
   }
